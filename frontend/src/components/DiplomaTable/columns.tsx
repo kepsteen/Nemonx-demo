@@ -8,6 +8,7 @@ export const diplomaSchema = z.object({
   name: z.string(),
   SSN: z.string().min(4).max(4),
   email: z.string().email(),
+  phone: z.string().min(10).max(10),
   degree: z.string(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),

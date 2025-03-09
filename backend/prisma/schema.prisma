@@ -1,0 +1,31 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model diploma {
+  id         Int      @id(map: "diplomas_pkey") @default(autoincrement())
+  student_id String   @db.Uuid
+  degree     String   @db.VarChar(255)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  status     String   @db.VarChar(10)
+  student    student  @relation(fields: [student_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_student")
+}
+
+model student {
+  id         String    @id(map: "students_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name       String    @db.VarChar(255)
+  ssn        String    @db.Char(4)
+  email      String    @unique(map: "students_email_key") @db.VarChar(255)
+  phone      String    @db.Char(10)
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  diploma    diploma[]
+}
