@@ -4,7 +4,7 @@ import { Prisma, diploma } from '@prisma/client';
 
 @Injectable()
 export class DiplomasService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   async findAll(): Promise<diploma[]> {
     return this.prisma.diploma.findMany();
@@ -14,15 +14,15 @@ export class DiplomasService {
     return this.prisma.diploma.create({ data });
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} diploma`;
+  async findOne(id: number): Promise<diploma | null> {
+    return this.prisma.diploma.findUnique({ where: { id } });
   }
 
-  update(id: number) {
-    return `This action updates a #${id} diploma`;
+  async update(id: number, data: Prisma.diplomaUpdateInput): Promise<diploma> {
+    return this.prisma.diploma.update({ where: { id }, data });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} diploma`;
+  async remove(id: number): Promise<diploma> {
+    return this.prisma.diploma.delete({ where: { id } });
   }
 }

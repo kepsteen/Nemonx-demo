@@ -1,26 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { Prisma, student } from '@prisma/client';
 
 @Injectable()
 export class StudentsService {
-  create(createStudentDto: CreateStudentDto) {
-    return 'This action adds a new student';
+  constructor(private prisma: PrismaService) {}
+
+  async create(data: Prisma.studentCreateInput): Promise<student> {
+    return this.prisma.student.create({ data });
   }
 
-  findAll() {
-    return `This action returns all students`;
+  async findAll(): Promise<student[]> {
+    return this.prisma.student.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} student`;
+  async findOne(id: string): Promise<student | null> {
+    return this.prisma.student.findUnique({ where: { id } });
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
+  async update(id: string, data: Prisma.studentUpdateInput): Promise<student> {
+    return this.prisma.student.update({ where: { id }, data });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} student`;
+  async remove(id: string): Promise<student> {
+    return this.prisma.student.delete({ where: { id } });
   }
 }

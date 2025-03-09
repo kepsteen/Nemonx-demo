@@ -8,16 +8,14 @@ import {
   Delete,
 } from '@nestjs/common';
 import { DiplomasService } from './diplomas.service';
-import { CreateDiplomaDto } from './dto/create-diploma.dto';
-import { UpdateDiplomaDto } from './dto/update-diploma.dto';
-
+import { Prisma } from '@prisma/client';
 @Controller('diplomas')
 export class DiplomasController {
   constructor(private readonly diplomasService: DiplomasService) {}
 
   @Post()
-  create(@Body() createDiplomaDto: CreateDiplomaDto) {
-    return this.diplomasService.create(createDiplomaDto);
+  create(@Body() diplomaData: Prisma.diplomaCreateInput) {
+    return this.diplomasService.create(diplomaData);
   }
 
   @Get()
@@ -31,8 +29,11 @@ export class DiplomasController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDiplomaDto: UpdateDiplomaDto) {
-    return this.diplomasService.update(+id, updateDiplomaDto);
+  update(
+    @Param('id') id: string,
+    @Body() diplomaData: Prisma.diplomaUpdateInput,
+  ) {
+    return this.diplomasService.update(+id, diplomaData);
   }
 
   @Delete(':id')
