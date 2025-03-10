@@ -3,9 +3,9 @@ import { z } from 'zod';
 export const studentSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
-  ssn: z.number().min(4).max(4),
+  ssn: z.string().length(4),
   email: z.string().email(),
-  phone: z.string().min(10).max(10),
+  phone: z.string().length(10),
   created_at: z.string(),
   updated_at: z.string(),
 });

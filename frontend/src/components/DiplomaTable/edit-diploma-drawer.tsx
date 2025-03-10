@@ -1,4 +1,4 @@
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import {
   DrawerClose,
   DrawerContent,
@@ -7,7 +7,7 @@ import {
   DrawerTrigger,
   DrawerDescription,
   Drawer,
-} from './ui/drawer';
+} from '../ui/drawer';
 import {
   FormControl,
   FormField,
@@ -15,11 +15,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from './ui/form';
-import { Form } from './ui/form';
+} from '../ui/form';
+import { Form } from '../ui/form';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Input } from './ui/input';
+import { Input } from '../ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Diploma } from '@/types';
 import {
@@ -28,7 +28,7 @@ import {
   SelectTrigger,
   SelectItem,
   SelectContent,
-} from './ui/select';
+} from '../ui/select';
 import { formatPhoneNumber, stripCharacters } from '@/lib/utils';
 import { updateDiploma } from '@/lib/api';
 
@@ -81,6 +81,7 @@ export const EditDiplomaDrawer = ({ data }: { data: Diploma }) => {
       id: data.id.toString(),
     });
   }
+
   return (
     <Drawer direction="right">
       <DrawerTrigger>

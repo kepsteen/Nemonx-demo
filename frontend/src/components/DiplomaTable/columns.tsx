@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Diploma } from '@/types';
-import { EditDiplomaDrawer } from '../edit-diploma-drawer';
+import { EditDiplomaDrawer } from './edit-diploma-drawer';
 
 export const columns: ColumnDef<Diploma>[] = [
   {
