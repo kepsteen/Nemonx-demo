@@ -28,6 +28,11 @@ export class StudentsController {
     return this.studentsService.findOne(id);
   }
 
+  @Get('ssn/:ssn')
+  findBySsn(@Param('ssn') ssn: string) {
+    return this.studentsService.findBySsn(ssn);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

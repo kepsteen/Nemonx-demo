@@ -96,10 +96,9 @@ export const EditDiplomaDrawer = ({
         updated_at: new Date().toISOString(),
       },
     };
-    console.log(formattedValues);
     await updateDiploma({
       diploma: formattedValues,
-      id: data.id.toString(),
+      id: data.id?.toString() || '',
     });
     form.reset();
     refreshData();

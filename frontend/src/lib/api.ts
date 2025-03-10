@@ -29,7 +29,32 @@ export async function updateDiploma({
 }
 
 export async function getDiplomas() {
-  const response = await fetch('/api/diplomas');
+  const response = await fetch(`http://localhost:3000/api/diplomas`);
+  const data = await response.json();
+  return data;
+}
+
+export async function getStudentBySsn(ssn: string) {
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/students/ssn/${ssn}`,
+    );
+    const data = await response.json();
+    console.log(data);
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error: String(error) };
+  }
+}
+
+export async function addDiploma(diploma: Diploma) {
+  const response = await fetch(`http://localhost:3000/api/diplomas`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(diploma),
+  });
   const data = await response.json();
   return data;
 }

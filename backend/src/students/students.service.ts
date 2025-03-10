@@ -18,6 +18,10 @@ export class StudentsService {
     return this.prisma.student.findUnique({ where: { id } });
   }
 
+  async findBySsn(ssn: string): Promise<student | null> {
+    return this.prisma.student.findFirst({ where: { ssn } });
+  }
+
   async update(id: string, data: Prisma.studentUpdateInput): Promise<student> {
     return this.prisma.student.update({ where: { id }, data });
   }

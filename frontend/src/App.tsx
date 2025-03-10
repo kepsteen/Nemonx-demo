@@ -3,18 +3,18 @@ import { columns } from '@/components/DiplomaTable/columns';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { Diploma } from '@/types';
+import { AddDiplomaModal } from './components/AddDiplomaModal/add-diploma-modal';
 
 function App() {
   const [diplomaData, setDiplomaData] = useState<Diploma[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [open, setOpen] = useState(false);
   async function getDiplomas() {
     try {
-      const response = await fetch('/api/diplomas');
+      const response = await fetch(`http://localhost:3000/api/diplomas`);
       const data = (await response.json()) as Diploma[];
       setDiplomaData(data);
-      console.log(data);
     } catch (error) {
       setError(String(error));
     } finally {
@@ -36,16 +36,16 @@ function App() {
 
   return (
     <>
-      <h1 className="text-4xl font-semibold font-clash text-center mt-10">
-        Nemonx Demo
-      </h1>
       <section className="mt-10 p-4">
-        <Button className="mb-4">Add Diploma</Button>
+        <Button className="mb-4" onClick={() => setOpen(true)}>
+          Add Diploma
+        </Button>
         <DiplomaTable
           columns={columns}
           data={diplomaData}
           setData={setDiplomaData}
         />
+        <AddDiplomaModal open={open} setOpen={setOpen} />
       </section>
     </>
   );

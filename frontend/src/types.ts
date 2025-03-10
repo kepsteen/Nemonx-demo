@@ -11,7 +11,7 @@ export const studentSchema = z.object({
 });
 
 export const diplomaSchema = z.object({
-  id: z.number(),
+  id: z.number().optional(),
   student_id: z.string().uuid(),
   degree: z.string(),
   created_at: z.string(),

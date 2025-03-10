@@ -20,9 +20,9 @@ model diploma {
 }
 
 model student {
-  id         String    @id(map: "students_pkey") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id         String    @id(map: "students_pkey") @default(uuid()) @db.Uuid
   name       String    @db.VarChar(255)
-  ssn        String    @db.Char(4)
+  ssn        String    @unique @db.Char(4)
   email      String    @unique(map: "students_email_key") @db.VarChar(255)
   phone      String    @db.Char(10)
   created_at DateTime  @default(now()) @db.Timestamptz(6)

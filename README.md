@@ -1,40 +1,167 @@
-# Todo List
+# Student Diploma Management System
 
-## Backend
+This Demo is a full-stack application for managing student diplomas and student data. This application allows users to view, add, and modify diploma records and their corresponding student information.
 
-- [x] Set up NestJS project structure
-- [x] Create Students module with CRUD operations
-- [x] Create Diplomas module with CRUD operations
-- [x] Integrate Prisma ORM
-- [x] Set up Swagger documentation
-- [ ] Add authentication and authorization
-- [ ] Add validation pipes
-- [ ] Write unit tests
-- [ ] Write e2e tests
+## Project Overview
 
-## Frontend
+This application was built as a take-home assignment to demonstrate full-stack development skills using:
 
-- [ ] Create React project structure
-- [ ] Set up routing
-- [ ] Create student management pages
-- [ ] Create diploma management pages
-- [ ] Add form validation
-- [ ] Implement API integration
-- [ ] Add error handling
-- [ ] Add loading states
-- [ ] Style components
+- **Frontend**: React with TypeScript, Vite, and TanStack Table
+- **Backend**: NestJS with TypeScript
+- **Database**: PostgreSQL with Prisma ORM
 
-## DevOps
+The application provides a user interface to:
 
-- [ ] Set up CI/CD pipeline
-- [ ] Configure deployment environments
-- [ ] Set up monitoring
-- [ ] Configure logging
-- [ ] Create backup strategy
+- View a table of diplomas with student information
+- Add new diploma records
+- Edit existing diploma and student data
+- Filter and search through records
 
-## Documentation
+## Features
 
-- [ ] Write API documentation
-- [ ] Create user guide
-- [ ] Document deployment process
-- [ ] Add code comments
+- **Data Management**: CRUD operations for diploma and student records
+- **Data Validation**: Form validation using Zod schema
+- **Responsive UI**: Modern UI built with Tailwind CSS and Radix UI components
+- **Type Safety**: End-to-end type safety with TypeScript and Zod
+
+## Project Structure
+
+The project is organized into two main directories:
+
+### Backend (NestJS)
+
+```
+backend/
+├── prisma/                # Prisma schema and migrations
+├── src/
+│   ├── diplomas/          # Diploma module (controller, service)
+│   ├── students/          # Student module (controller, service)
+│   ├── prisma/            # Prisma service
+│   └── main.ts            # Application entry point
+└── package.json           # Backend dependencies
+```
+
+### Frontend (React + TypeScript)
+
+```
+frontend/
+├── src/
+│   ├── components/           # React components
+│   │   ├── DiplomaTable/     # Table components for diplomas
+│   │   ├── AddDiplomaModal/  # Modal for adding a diploma
+│   │   └── ui/               # UI components
+│   ├── lib/                  # Utility functions and API client
+│   ├── types.ts              # TypeScript type definitions
+│   └── App.tsx               # Main application component
+└── package.json              # Frontend dependencies
+```
+
+## Data Models
+
+### Student
+
+- `id`: UUID
+- `name`: String
+- `ssn`: String (4 characters)
+- `email`: String (email format)
+- `phone`: String (10 characters)
+- `created_at`: DateTime
+- `updated_at`: DateTime
+
+### Diploma
+
+- `id`: Integer
+- `student_id`: UUID (foreign key to Student)
+- `degree`: String
+- `status`: Enum ('pending', 'processing', 'success', 'failed')
+- `created_at`: DateTime
+- `updated_at`: DateTime
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- PostgreSQL database
+- npm or pnpm or yarn
+
+### Installation
+
+1. Clone the repository:
+
+   ```
+   git clone <repository-url>
+   cd nemonx-demo
+   ```
+
+2. Set up the backend:
+
+   ```
+   cd backend
+   npm install
+   ```
+
+3. Configure the database:
+
+   - Create a PostgreSQL database (I'm using Neon)
+   - Update the `.env` file with your database connection string
+   - Run Prisma migrations:
+     ```
+     npx prisma migrate dev
+     ```
+
+4. Set up the frontend:
+   ```
+   cd ../frontend
+   npm install
+   ```
+
+### Running the Application
+
+1. Start the backend and frontend servers:
+
+   ```
+   npm run dev
+   ```
+
+2. Open your browser and navigate to `http://localhost:5173`
+
+## API Endpoints
+
+### Diplomas
+
+- `GET /api/diplomas` - Get all diplomas
+- `GET /api/diplomas/:id` - Get a specific diploma
+- `POST /api/diplomas` - Create a new diploma
+- `PATCH /api/diplomas/:id` - Update a diploma
+- `PATCH /api/diplomas/:id/with-student` - Update a diploma with student data
+- `DELETE /api/diplomas/:id` - Delete a diploma
+
+### Students
+
+- `GET /api/students` - Get all students
+- `GET /api/students/:id` - Get a specific student by ID
+- `GET /api/students/ssn/:ssn` - Get a student by SSN
+- `POST /api/students` - Create a new student
+- `PATCH /api/students/:id` - Update a student
+- `DELETE /api/students/:id` - Delete a student
+
+## Technologies Used
+
+### Backend
+
+- NestJS
+- Prisma ORM
+- PostgreSQL (Neon)
+- TypeScript
+
+### Frontend
+
+- React 19
+- TypeScript
+- Vite
+- TanStack Table
+- React Hook Form
+- Zod
+- Tailwind CSS
+- Shadcn UI components

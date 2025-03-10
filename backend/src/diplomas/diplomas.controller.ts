@@ -43,8 +43,6 @@ export class DiplomasController {
     @Param('id') id: string,
     @Body() data: UpdateWithStudentDto,
   ) {
-    console.log('data', data);
-
     const diplomaData: Prisma.diplomaUpdateInput = {
       degree: data.degree,
       status: data.status,

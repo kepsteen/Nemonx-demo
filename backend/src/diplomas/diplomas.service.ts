@@ -48,7 +48,6 @@ export class DiplomasService {
     if (!diploma) {
       throw new NotFoundException('Diploma not found');
     }
-    console.log('diplomaData', diplomaData);
     return this.prisma.diploma.update({
       where: { id },
       data: {
