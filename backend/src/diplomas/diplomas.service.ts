@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, diploma } from '@prisma/client';
 
@@ -28,7 +28,38 @@ export class DiplomasService {
   }
 
   async update(id: number, data: Prisma.diplomaUpdateInput): Promise<diploma> {
-    return this.prisma.diploma.update({ where: { id }, data });
+    return this.prisma.diploma.update({
+      where: { id },
+      data,
+      include: {
+        student: true,
+      },
+    });
+  }
+
+  async updateWithStudent(
+    id: number,
+    diplomaData: Prisma.diplomaUpdateInput,
+    studentData: Prisma.studentUpdateInput,
+  ): Promise<diploma> {
+    const diploma = await this.prisma.diploma.findUnique({
+      where: { id },
+    });
+    if (!diploma) {
+      throw new NotFoundException('Diploma not found');
+    }
+    return this.prisma.diploma.update({
+      where: { id },
+      data: {
+        ...diplomaData,
+        student: {
+          update: {
+            where: { id: diploma.student_id },
+            data: studentData,
+          },
+        },
+      },
+    });
   }
 
   async remove(id: number): Promise<diploma> {

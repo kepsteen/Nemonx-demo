@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { DiplomasService } from './diplomas.service';
 import { Prisma } from '@prisma/client';
-@Controller('diplomas')
+@Controller('/api/diplomas')
 export class DiplomasController {
   constructor(private readonly diplomasService: DiplomasService) {}
 
@@ -31,9 +31,25 @@ export class DiplomasController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() diplomaData: Prisma.diplomaUpdateInput,
+    @Body() diplomaData: Prisma.diplomaCreateManyStudentInput,
   ) {
     return this.diplomasService.update(+id, diplomaData);
+  }
+
+  @Patch(':id/with-student')
+  updateWithStudent(
+    @Param('id') id: string,
+    @Body()
+    data: {
+      diploma: Prisma.diplomaUpdateInput;
+      student: Prisma.studentUpdateInput;
+    },
+  ) {
+    return this.diplomasService.updateWithStudent(
+      +id,
+      data.diploma,
+      data.student,
+    );
   }
 
   @Delete(':id')

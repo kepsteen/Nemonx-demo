@@ -5,6 +5,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
+  DrawerDescription,
   Drawer,
 } from './ui/drawer';
 import {
@@ -20,7 +21,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from './ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { iDiploma } from '@/types';
+import { Diploma } from '@/types';
 import {
   Select,
   SelectValue,
@@ -28,16 +29,21 @@ import {
   SelectItem,
   SelectContent,
 } from './ui/select';
+import { formatPhoneNumber, stripCharacters } from '@/lib/utils';
+import { updateDiploma } from '@/lib/api';
+
 const editDiplomaSchema = z.object({
   degree: z.string(),
   status: z.enum(['pending', 'processing', 'success', 'failed']),
   studentName: z.string().min(1, 'Student name is required'),
   studentSsn: z.string().length(4, 'SSN must be exactly 4 digits'),
   studentEmail: z.string().email('Please enter a valid email address'),
-  studentPhone: z.string().length(10, 'Phone number must be exactly 10 digits'),
+  studentPhone: z.string().refine((val) => stripCharacters(val).length === 10, {
+    message: 'Phone number must be exactly 10 digits',
+  }),
 });
 
-export const EditDiplomaDrawer = ({ data }: { data: iDiploma }) => {
+export const EditDiplomaDrawer = ({ data }: { data: Diploma }) => {
   const form = useForm<z.infer<typeof editDiplomaSchema>>({
     resolver: zodResolver(editDiplomaSchema),
     mode: 'onChange',
@@ -47,12 +53,33 @@ export const EditDiplomaDrawer = ({ data }: { data: iDiploma }) => {
       studentName: data.student?.name,
       studentSsn: data.student?.ssn?.toString(),
       studentEmail: data.student?.email,
-      studentPhone: data.student?.phone,
+      studentPhone: formatPhoneNumber(data.student?.phone || ''),
     },
   });
 
-  function onSubmit(values: z.infer<typeof editDiplomaSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof editDiplomaSchema>) {
+    const formattedValues = {
+      id: data.id,
+      student_id: data.student_id,
+      degree: values.degree,
+      status: values.status,
+      created_at: data.created_at,
+      updated_at: new Date().toISOString(),
+      student: {
+        id: data.student_id,
+        name: values.studentName,
+        ssn: values.studentSsn,
+        email: values.studentEmail,
+        phone: stripCharacters(values.studentPhone),
+        created_at: data.student?.created_at as string,
+        updated_at: new Date().toISOString(),
+      },
+    };
+    console.log(formattedValues);
+    await updateDiploma({
+      diploma: formattedValues,
+      id: data.id.toString(),
+    });
   }
   return (
     <Drawer direction="right">
@@ -61,7 +88,10 @@ export const EditDiplomaDrawer = ({ data }: { data: iDiploma }) => {
       </DrawerTrigger>
       <DrawerContent className="p-4">
         <DrawerHeader>
-          <DrawerTitle>Edit Diploma Details</DrawerTitle>
+          <DrawerTitle>Edit Diploma</DrawerTitle>
+          <DrawerDescription>
+            Edit the details of the diploma.
+          </DrawerDescription>
         </DrawerHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -86,7 +116,15 @@ export const EditDiplomaDrawer = ({ data }: { data: iDiploma }) => {
                 <FormItem>
                   <FormLabel>Student SSN (last 4 digits)</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" maxLength={4} />
+                    <Input
+                      {...field}
+                      type="text"
+                      maxLength={4}
+                      onChange={(e) => {
+                        const formattedValue = stripCharacters(e.target.value);
+                        field.onChange(formattedValue);
+                      }}
+                    />
                   </FormControl>
                   <FormDescription />
                   <FormMessage />
@@ -114,9 +152,20 @@ export const EditDiplomaDrawer = ({ data }: { data: iDiploma }) => {
                 <FormItem>
                   <FormLabel>Student Phone</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      onChange={(e) => {
+                        const formattedValue = formatPhoneNumber(
+                          e.target.value,
+                        );
+                        field.onChange(formattedValue);
+                      }}
+                      placeholder="(123) 456-7890"
+                    />
                   </FormControl>
-                  <FormDescription />
+                  <FormDescription>
+                    Enter a 10-digit phone number
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -145,9 +194,13 @@ export const EditDiplomaDrawer = ({ data }: { data: iDiploma }) => {
                 </FormItem>
               )}
             />
-            <div className="flex justify-between gap-2 mt-6">
+            <div className="flex justify-center gap-2 mt-6">
               <DrawerClose>
-                <Button variant="outline" type="button">
+                <Button
+                  onClick={() => form.reset()}
+                  variant="outline"
+                  type="button"
+                >
                   Cancel
                 </Button>
               </DrawerClose>

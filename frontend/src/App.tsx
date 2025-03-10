@@ -2,18 +2,18 @@ import { DiplomaTable } from '@/components/DiplomaTable/data-table';
 import { columns } from '@/components/DiplomaTable/columns';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
-import { iDiploma } from '@/types';
+import { Diploma } from '@/types';
 
 function App() {
-  const [diplomaData, setDiplomaData] = useState<iDiploma[]>([]);
+  const [diplomaData, setDiplomaData] = useState<Diploma[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function getDiplomas() {
       try {
-        const response = await fetch('http://localhost:3000/diplomas');
-        const data = (await response.json()) as iDiploma[];
+        const response = await fetch('/api/diplomas');
+        const data = (await response.json()) as Diploma[];
         setDiplomaData(data);
         console.log(data);
       } catch (error) {

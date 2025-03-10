@@ -20,5 +20,5 @@ export const diplomaSchema = z.object({
   student: studentSchema.optional(),
 });
 
-export type iStudent = z.infer<typeof studentSchema>;
-export type iDiploma = z.infer<typeof diplomaSchema>;
+export type Student = z.infer<typeof studentSchema>;
+export type Diploma = z.infer<typeof diplomaSchema>;

@@ -1,9 +1,9 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { iDiploma } from '@/types';
+import { Diploma } from '@/types';
 import { EditDiplomaDrawer } from '../edit-diploma-drawer';
 
-export const columns: ColumnDef<iDiploma>[] = [
+export const columns: ColumnDef<Diploma>[] = [
   {
     id: 'select',
     header: ({ table }) => (
