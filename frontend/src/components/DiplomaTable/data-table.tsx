@@ -16,7 +16,6 @@ import {
 } from '@/components/ui/table';
 import { getDiplomas } from '@/lib/api';
 
-// Define the meta type
 export interface TableMetaType<TData> extends TableMeta<TData> {
   refreshData: () => void;
 }
@@ -37,19 +36,6 @@ export function DiplomaTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     meta: {
-      // updateData: (rowIndex: number, columnId: string, value: string) => {
-      //   setData((old) =>
-      //     old.map((row: TData, index: number) => {
-      //       if (index === rowIndex) {
-      //         return {
-      //           ...old[rowIndex]!,
-      //           [columnId]: value,
-      //         };
-      //       }
-      //       return row;
-      //     }),
-      //   );
-      // },
       refreshData: () => {
         getDiplomas().then((data) => {
           setData(data);

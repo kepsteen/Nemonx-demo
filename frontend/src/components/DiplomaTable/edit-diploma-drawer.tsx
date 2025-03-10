@@ -31,6 +31,7 @@ import {
 } from '../ui/select';
 import { formatPhoneNumber, stripCharacters } from '@/lib/utils';
 import { updateDiploma } from '@/lib/api';
+import { useEffect, useState } from 'react';
 
 const editDiplomaSchema = z.object({
   degree: z.string(),
@@ -52,6 +53,7 @@ export const EditDiplomaDrawer = ({
   data,
   refreshData,
 }: EditDiplomaDrawerProps) => {
+  const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof editDiplomaSchema>>({
     resolver: zodResolver(editDiplomaSchema),
     mode: 'onChange',
@@ -64,6 +66,17 @@ export const EditDiplomaDrawer = ({
       studentPhone: formatPhoneNumber(data.student?.phone || ''),
     },
   });
+
+  useEffect(() => {
+    form.reset({
+      degree: data.degree,
+      status: data.status,
+      studentName: data.student?.name,
+      studentSsn: data.student?.ssn?.toString(),
+      studentEmail: data.student?.email,
+      studentPhone: formatPhoneNumber(data.student?.phone || ''),
+    });
+  }, [data, form]);
 
   async function onSubmit(values: z.infer<typeof editDiplomaSchema>) {
     const formattedValues = {
@@ -90,10 +103,11 @@ export const EditDiplomaDrawer = ({
     });
     form.reset();
     refreshData();
+    setOpen(false);
   }
 
   return (
-    <Drawer direction="right">
+    <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger>
         <Button variant="secondary">Edit</Button>
       </DrawerTrigger>
@@ -208,7 +222,10 @@ export const EditDiplomaDrawer = ({
             <div className="flex justify-center gap-2 mt-6">
               <DrawerClose>
                 <Button
-                  onClick={() => form.reset()}
+                  onClick={() => {
+                    form.reset();
+                    setOpen(false);
+                  }}
                   variant="outline"
                   type="button"
                 >

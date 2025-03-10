@@ -36,9 +36,11 @@ function App() {
 
   return (
     <>
-      <h1 className="text-4xl font-semibold font-clash">Nemonx Demo</h1>
+      <h1 className="text-4xl font-semibold font-clash text-center mt-10">
+        Nemonx Demo
+      </h1>
       <section className="mt-10 p-4">
-        <Button>Add Diploma</Button>
+        <Button className="mb-4">Add Diploma</Button>
         <DiplomaTable
           columns={columns}
           data={diplomaData}
