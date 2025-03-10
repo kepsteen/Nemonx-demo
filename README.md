@@ -90,7 +90,7 @@ frontend/
 1. Clone the repository:
 
    ```
-   git clone <repository-url>
+   git clone https://github.com/kepsteen/Nemonx-demo
    cd nemonx-demo
    ```
 
