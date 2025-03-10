@@ -1,23 +1,9 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/components/ui/checkbox';
+import { iDiploma } from '@/types';
+import { EditDiplomaDrawer } from '../edit-diploma-drawer';
 
-import { z } from 'zod';
-
-export const diplomaSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  SSN: z.string().min(4).max(4),
-  email: z.string().email(),
-  phone: z.string().min(10).max(10),
-  degree: z.string(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-  status: z.enum(['pending', 'processing', 'success', 'failed']),
-});
-
-export type Diploma = z.infer<typeof diplomaSchema>;
-
-export const columns: ColumnDef<Diploma>[] = [
+export const columns: ColumnDef<iDiploma>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -42,14 +28,17 @@ export const columns: ColumnDef<Diploma>[] = [
   },
   {
     accessorKey: 'name',
+    cell: ({ row }) => row.original.student?.name,
     header: 'Name',
   },
   {
     accessorKey: 'SSN',
+    cell: ({ row }) => row.original.student?.ssn,
     header: 'SSN',
   },
   {
     accessorKey: 'email',
+    cell: ({ row }) => row.original.student?.email,
     header: 'Email',
   },
   {
@@ -57,11 +46,52 @@ export const columns: ColumnDef<Diploma>[] = [
     header: 'Degree',
   },
   {
-    accessorKey: 'createdAt',
+    accessorKey: 'created_at',
     header: 'Created At',
+    cell: ({ row }) => {
+      return row.original.created_at.split('T')[0];
+    },
   },
   {
     accessorKey: 'status',
+    cell: ({ row }) => {
+      switch (row.original.status) {
+        case 'pending':
+          return <span>Pending</span>;
+        case 'processing':
+          return <span className="text-blue-500">Processing</span>;
+        case 'success':
+          return <span className="text-green-500">Success</span>;
+        case 'failed':
+          return <span className="text-red-500">Failed</span>;
+        default:
+          return <span>Unknown</span>;
+      }
+    },
     header: 'Status',
+  },
+  {
+    accessorKey: 'phone',
+    cell: ({ row }) => {
+      const phone = row.original.student?.phone;
+      if (!phone) return '';
+
+      const formattedPhone =
+        '(' +
+        phone.slice(0, 3) +
+        ')' +
+        phone.slice(3, 6) +
+        '-' +
+        phone.slice(6);
+      return formattedPhone;
+    },
+    header: 'Phone',
+  },
+  {
+    accessorKey: 'actions',
+    cell: ({ row }) => {
+      return <EditDiplomaDrawer data={row.original} />;
+    },
+    header: 'Actions',
   },
 ];

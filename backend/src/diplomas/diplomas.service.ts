@@ -7,7 +7,11 @@ export class DiplomasService {
   constructor(private prisma: PrismaService) {}
 
   async findAll(): Promise<diploma[]> {
-    return this.prisma.diploma.findMany();
+    return this.prisma.diploma.findMany({
+      include: {
+        student: true,
+      },
+    });
   }
 
   async create(data: Prisma.diplomaCreateInput): Promise<diploma> {
@@ -15,7 +19,12 @@ export class DiplomasService {
   }
 
   async findOne(id: number): Promise<diploma | null> {
-    return this.prisma.diploma.findUnique({ where: { id } });
+    return this.prisma.diploma.findUnique({
+      where: { id },
+      include: {
+        student: true,
+      },
+    });
   }
 
   async update(id: number, data: Prisma.diplomaUpdateInput): Promise<diploma> {
