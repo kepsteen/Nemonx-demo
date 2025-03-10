@@ -172,6 +172,20 @@ export const EditDiplomaDrawer = ({
             />
             <FormField
               control={form.control}
+              name="degree"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Degree</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="studentPhone"
               render={({ field }) => (
                 <FormItem>
@@ -202,7 +216,10 @@ export const EditDiplomaDrawer = ({
                 <FormItem>
                   <FormLabel>Status</FormLabel>
                   <FormControl>
-                    <Select {...field}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Status" />
                       </SelectTrigger>
@@ -220,15 +237,13 @@ export const EditDiplomaDrawer = ({
               )}
             />
             <div className="flex justify-center gap-2 mt-6">
-              <DrawerClose>
-                <Button
-                  onClick={() => {
-                    form.reset();
-                    setOpen(false);
-                  }}
-                  variant="outline"
-                  type="button"
-                >
+              <DrawerClose
+                onClick={() => {
+                  form.reset();
+                  setOpen(false);
+                }}
+              >
+                <Button variant="outline" type="button">
                   Cancel
                 </Button>
               </DrawerClose>

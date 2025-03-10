@@ -42,7 +42,7 @@ export function DiplomaTable<TData, TValue>({
         });
       },
     } as TableMetaType<TData>,
-    debugTable: true,
+    debugTable: false,
   });
 
   return (

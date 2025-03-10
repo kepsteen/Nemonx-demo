@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { DiplomasService } from './diplomas.service';
 import { Prisma } from '@prisma/client';
+import { UpdateWithStudentDto } from './dto';
+
 @Controller('/api/diplomas')
 export class DiplomasController {
   constructor(private readonly diplomasService: DiplomasService) {}
@@ -39,16 +41,21 @@ export class DiplomasController {
   @Patch(':id/with-student')
   updateWithStudent(
     @Param('id') id: string,
-    @Body()
-    data: {
-      diploma: Prisma.diplomaUpdateInput;
-      student: Prisma.studentUpdateInput;
-    },
+    @Body() data: UpdateWithStudentDto,
   ) {
+    console.log('data', data);
+
+    const diplomaData: Prisma.diplomaUpdateInput = {
+      degree: data.degree,
+      status: data.status,
+    };
+
+    const studentData: Prisma.studentUpdateInput = data.student;
+
     return this.diplomasService.updateWithStudent(
       +id,
-      data.diploma,
-      data.student,
+      diplomaData,
+      studentData,
     );
   }
 
