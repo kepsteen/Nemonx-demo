@@ -3,6 +3,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  TableMeta,
 } from '@tanstack/react-table';
 
 import {
@@ -13,20 +14,49 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { getDiplomas } from '@/lib/api';
+
+// Define the meta type
+export interface TableMetaType<TData> extends TableMeta<TData> {
+  refreshData: () => void;
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  setData: React.Dispatch<React.SetStateAction<TData[]>>;
 }
 
 export function DiplomaTable<TData, TValue>({
   columns,
   data,
+  setData,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    meta: {
+      // updateData: (rowIndex: number, columnId: string, value: string) => {
+      //   setData((old) =>
+      //     old.map((row: TData, index: number) => {
+      //       if (index === rowIndex) {
+      //         return {
+      //           ...old[rowIndex]!,
+      //           [columnId]: value,
+      //         };
+      //       }
+      //       return row;
+      //     }),
+      //   );
+      // },
+      refreshData: () => {
+        getDiplomas().then((data) => {
+          setData(data);
+        });
+      },
+    } as TableMetaType<TData>,
+    debugTable: true,
   });
 
   return (

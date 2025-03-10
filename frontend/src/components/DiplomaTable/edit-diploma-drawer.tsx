@@ -43,7 +43,15 @@ const editDiplomaSchema = z.object({
   }),
 });
 
-export const EditDiplomaDrawer = ({ data }: { data: Diploma }) => {
+interface EditDiplomaDrawerProps {
+  data: Diploma;
+  refreshData: () => void;
+}
+
+export const EditDiplomaDrawer = ({
+  data,
+  refreshData,
+}: EditDiplomaDrawerProps) => {
   const form = useForm<z.infer<typeof editDiplomaSchema>>({
     resolver: zodResolver(editDiplomaSchema),
     mode: 'onChange',
@@ -80,6 +88,7 @@ export const EditDiplomaDrawer = ({ data }: { data: Diploma }) => {
       diploma: formattedValues,
       id: data.id.toString(),
     });
+    refreshData();
   }
 
   return (

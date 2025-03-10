@@ -27,3 +27,9 @@ export async function updateDiploma({
     console.error('Error updating diploma:', error);
   }
 }
+
+export async function getDiplomas() {
+  const response = await fetch('/api/diplomas');
+  const data = await response.json();
+  return data;
+}

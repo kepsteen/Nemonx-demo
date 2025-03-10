@@ -9,19 +9,20 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function getDiplomas() {
-      try {
-        const response = await fetch('/api/diplomas');
-        const data = (await response.json()) as Diploma[];
-        setDiplomaData(data);
-        console.log(data);
-      } catch (error) {
-        setError(String(error));
-      } finally {
-        setLoading(false);
-      }
+  async function getDiplomas() {
+    try {
+      const response = await fetch('/api/diplomas');
+      const data = (await response.json()) as Diploma[];
+      setDiplomaData(data);
+      console.log(data);
+    } catch (error) {
+      setError(String(error));
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     getDiplomas();
   }, []);
 
@@ -38,7 +39,11 @@ function App() {
       <h1 className="text-4xl font-semibold font-clash">Nemonx Demo</h1>
       <section className="mt-10 p-4">
         <Button>Add Diploma</Button>
-        <DiplomaTable columns={columns} data={diplomaData} />
+        <DiplomaTable
+          columns={columns}
+          data={diplomaData}
+          setData={setDiplomaData}
+        />
       </section>
     </>
   );

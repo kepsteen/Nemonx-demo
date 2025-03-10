@@ -2,6 +2,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Diploma } from '@/types';
 import { EditDiplomaDrawer } from './edit-diploma-drawer';
+import { TableMetaType } from './data-table';
 
 export const columns: ColumnDef<Diploma>[] = [
   {
@@ -89,8 +90,11 @@ export const columns: ColumnDef<Diploma>[] = [
   },
   {
     accessorKey: 'actions',
-    cell: ({ row }) => {
-      return <EditDiplomaDrawer data={row.original} />;
+    cell: ({ row, table }) => {
+      const meta = table.options.meta as TableMetaType<Diploma>;
+      return (
+        <EditDiplomaDrawer data={row.original} refreshData={meta.refreshData} />
+      );
     },
     header: 'Actions',
   },
