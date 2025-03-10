@@ -1,4 +1,4 @@
-# Student Diploma Management System
+# Nemonx Demo
 
 This Demo is a full-stack application for managing student diplomas and student data. This application allows users to view, add, and modify diploma records and their corresponding student information.
 
