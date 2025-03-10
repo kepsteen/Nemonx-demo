@@ -27,26 +27,46 @@ function App() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Loading...
+      </div>
+    );
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div className="flex items-center justify-center h-screen text-red-500">
+        {error}
+      </div>
+    );
   }
 
   return (
     <>
-      <section className="mt-10 p-4">
-        <Button className="mb-4" onClick={() => setOpen(true)}>
-          Add Diploma
-        </Button>
-        <DiplomaTable
-          columns={columns}
-          data={diplomaData}
-          setData={setDiplomaData}
-        />
-        <AddDiplomaModal open={open} setOpen={setOpen} />
-      </section>
+      <div className="container mx-auto py-8 px-4 max-w-7xl min-h-screen">
+        <h1 className="text-3xl font-bold text-center text-green-600 mb-8">
+          Nemonx Demo
+        </h1>
+        <section>
+          <div className="mb-6">
+            <Button
+              className="bg-green-600 hover:bg-green-700"
+              onClick={() => setOpen(true)}
+            >
+              Add Diploma
+            </Button>
+          </div>
+          <div>
+            <DiplomaTable
+              columns={columns}
+              data={diplomaData}
+              setData={setDiplomaData}
+            />
+          </div>
+          <AddDiplomaModal open={open} setOpen={setOpen} />
+        </section>
+      </div>
     </>
   );
 }

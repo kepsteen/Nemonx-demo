@@ -201,9 +201,6 @@ export const EditDiplomaDrawer = ({
                       placeholder="(123) 456-7890"
                     />
                   </FormControl>
-                  <FormDescription>
-                    Enter a 10-digit phone number
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
