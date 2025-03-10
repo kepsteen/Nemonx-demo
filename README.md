@@ -2,6 +2,12 @@
 
 This Demo is a full-stack application for managing student diplomas and student data. This application allows users to view, add, and modify diploma records and their corresponding student information.
 
+
+
+https://github.com/user-attachments/assets/d6fa5f52-35a6-43d4-9792-e00d49c50789
+
+
+
 ## Project Overview
 
 This application was built as a take-home assignment to demonstrate full-stack development skills using:
