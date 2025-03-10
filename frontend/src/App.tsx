@@ -45,7 +45,7 @@ function App() {
   return (
     <>
       <div className="container mx-auto py-8 px-4 max-w-7xl min-h-screen">
-        <h1 className="text-3xl font-bold text-center text-green-600 mb-8">
+        <h1 className="text-3xl font-semibold text-center text-green-600 mb-8 font-clash">
           Nemonx Demo
         </h1>
         <section>
