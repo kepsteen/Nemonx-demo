@@ -88,6 +88,7 @@ export const EditDiplomaDrawer = ({
       diploma: formattedValues,
       id: data.id.toString(),
     });
+    form.reset();
     refreshData();
   }
 
